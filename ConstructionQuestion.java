@@ -16,18 +16,28 @@ class IntNode{
     IntNode left;
     IntNode right;
 }
+
+class LinkNode{
+    int data;
+    LinkNode prev;
+    LinkNode next;
+}
 public class ConstructionQuestion {
     
+    Queue<Integer> queueList = new LinkedList<>();
     LinkedList<Integer> list = new LinkedList<>();
     Scanner scanner = new Scanner(System.in);
-    Node root,temp,newnode;
-    IntNode rootNode;
-    IntNode newNode,tempNode,tempNode1=null;
-    Node temp1=null;
+    
+    Node root,temp,newnode,temp1=null;
+    IntNode rootNode,newNode,tempNode,tempNode1=null;
+    LinkNode listRoot,tempListNode,newListNode;
+    int ArrayList[] = new int[10];
+    
     
     public ConstructionQuestion(){
         root = null;
         rootNode=null;
+        listRoot=null;
     }
     
     public void buildTree(char inorder[],char preorder[]){
@@ -264,6 +274,197 @@ public class ConstructionQuestion {
         inorder(node.left);
         System.out.print(node.data+"  ");
         inorder(node.right);
+    }
+    
+    public void createArray(int num){
+        for(int i=0;i<num;i++){
+            System.out.print("\nData:-");
+            int data=scanner.nextInt();
+            ArrayList[i]=data;
+        }
+    }
+    
+    void treeFromArrayList(int num){
+        
+        Queue<Integer> queue = new LinkedList<>();
+        Queue<Integer> queue2 = new LinkedList<>();
+        
+        queue.add(ArrayList[0]);
+        queue2.add(ArrayList[1]);
+        queue2.add(ArrayList[2]);
+        
+        newNode = new IntNode();
+        newNode.data=0;
+        newNode.left= null;
+        newNode.right=null;
+        
+        if (rootNode==null){
+            rootNode = new IntNode();
+            rootNode.data=queue.element();
+            rootNode.left= null;
+            rootNode.right=null;
+            tempNode=rootNode;
+            
+            if(tempNode.left==null){
+                newNode = new IntNode();
+                newNode.data=queue2.element();
+                newNode.left= null;
+                newNode.right=null;
+                tempNode.left=newNode;
+                queue.poll();
+                queue.add(queue2.poll());
+            }
+            if(tempNode.right==null){
+                newNode = new IntNode();
+                newNode.data=queue2.element();
+                newNode.left= null;
+                newNode.right=null;
+                tempNode.right=newNode;
+                queue.add(queue2.poll());
+            }
+        }
+        int length=3,i,j=2;
+        while(length<num){
+            int queueLength = queue.size();
+            for(i=0;i<(queue.size()*2);i++){
+                j=j+1;
+                if(j<num)
+                    queue2.add(ArrayList[j]);
+            }
+            length=length+1;
+        }
+        while(!queue2.isEmpty()){
+            searchData(queue.element());
+            queue.poll();
+            if(!queue2.isEmpty()){
+                newNode = new IntNode();
+                newNode.data=queue2.element();
+                newNode.left= null;
+                newNode.right=null;
+                tempNode1.left=newNode;
+                queue.add(queue2.poll());
+            }
+            if(!queue2.isEmpty()){
+                newNode = new IntNode();
+                newNode.data=queue2.element();
+                newNode.left= null;
+                newNode.right=null;
+                tempNode1.right=newNode;
+                queue.add(queue2.poll());
+            }
+        }
+        inorder(rootNode);
+    }
+    
+    public void createBT(int value){
+        int num;
+        char side;
+        int flag1=0,flag2=0;
+            
+        newNode = new IntNode();
+        newNode.data = value;
+        newNode.left=null;
+        newNode.right=null;
+            
+        if(rootNode==null){
+            rootNode = newNode;
+        }
+        else{
+            tempNode = rootNode;
+            System.out.print("\nWhere to enter(L/R):-");
+            side=scanner.next().charAt(0);
+            if(side=='L'){
+                if(tempNode.left==null){
+                    tempNode.left = newNode;
+                    tempNode=null;
+                }
+                else{
+                    tempNode=tempNode.left;
+                }
+                while(tempNode!=null){
+                    System.out.print("\nWhere to enter(L/R):-");
+                    side=scanner.next().charAt(0);
+                    if(side=='L'){
+                        tempNode1 = tempNode;
+                        tempNode=tempNode.left;
+                        flag1=1;
+                        flag2=0;
+                    }
+                    else{
+                        tempNode1=tempNode;
+                        tempNode=tempNode.right;
+                        flag1=0;
+                        flag2=1;
+                    }
+                }
+                if(flag1==1)
+                    tempNode1.left=newNode;
+                else if(flag2==1)
+                    tempNode1.right=newNode;
+            }
+            else{
+                if(rootNode.right==null){
+                    rootNode.right = newNode;
+                    tempNode = null;
+                }
+                else{
+                    tempNode=tempNode.right;
+                }
+                while(tempNode!=null){
+                    System.out.print("\nWhere to enter(L/R):-");
+                    side=scanner.next().charAt(0);
+                    if(side=='L'){
+                        tempNode1 = tempNode;
+                        tempNode=tempNode.left;
+                        flag1=1;
+                        flag2=0;
+                    }
+                    else{
+                        tempNode1=tempNode;
+                        tempNode=tempNode.right;
+                        flag1=0;
+                        flag2=1;
+                    }
+                }
+                if(flag1==1)
+                    tempNode1.left=newNode;
+                else if(flag2==1)
+                    tempNode1.right=newNode;
+            }
+
+        }
+    }
+    
+    public void saveData(IntNode nodeData){
+        if(nodeData==null)
+            return;
+        saveData(nodeData.left);
+        queueList.add(nodeData.data);
+        saveData(nodeData.right);
+    }
+    void convertTreetoDll(){
+        saveData(rootNode);
+        while(!queueList.isEmpty()){
+            newListNode = new LinkNode();
+            newListNode.data = queueList.poll();
+            newListNode.next=null;
+            newListNode.prev=null;
+
+            if(listRoot==null)
+                listRoot=newListNode;
+            else{
+               tempListNode=listRoot;
+               while(tempListNode.next!=null)
+                   tempListNode=tempListNode.next;
+               tempListNode.next=newListNode;
+               newListNode.prev=tempListNode;
+            }
+        }
+        tempListNode=listRoot;
+        while(tempListNode!=null){
+            System.out.print(tempListNode.data+" ");
+            tempListNode=tempListNode.next;
+        }
     }
     
 }
