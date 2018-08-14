@@ -14,7 +14,11 @@ public class BTreeConstruction {
                     + "2)Create tree from linlist\n3)Create tree from array"
                     + "\n4)Convert tree to DLL\n5)Convert a given tree to its Sum Tree\n"
                     + "6)Convert tree to Circular DLL\n7)Create a Doubly Linked "
-                    + "List from a Ternary Tree\n12)Exit");
+                    + "List from a Ternary Tree\n8)Construct Full Binary Tree "
+                    + "from given preorder and postorder traversals\n"
+                    + "9)Binary tree to a tree that holds Logical AND property\n"
+                    + "10)Binary Tree into Doubly Linked List in spiral fashion\n"
+                    + "12)Exit");
             System.out.print("\nEnter your choice:-");
             choice=sc.nextInt();
             switch(choice){
@@ -86,6 +90,33 @@ public class BTreeConstruction {
                         treeRoot.right.right = new TernaryTree(65);
                         tree.storeDataLevelOrder(treeRoot);
                         tree.createDLL();
+                        break;
+                        
+                case 8: /*int pre[] = { 1, 2, 4, 8, 9, 5, 3, 6, 7};
+                        int post[] ={ 8, 9, 4, 5, 2, 6, 7, 3, 1};
+                        int size = pre.length;
+                        tree.treeUsingPostAndPre(pre, post, size);*/
+                        break;
+                        
+                case 9: System.out.print("\nNumber of nodes:-");
+                        num=sc.nextInt();
+                        for(int i=0;i<num;i++){
+                            System.out.print("\nValue:-");
+                            int value = sc.nextInt();
+                            tree.createBT(value);
+                        }
+                        tree.convertToLogicalAND(tree.getRootData());
+                        tree.inorder(tree.getRootData());
+                        break;
+                        
+                case 10:System.out.print("\nNumber of nodes:-");
+                        num=sc.nextInt();
+                        for(int i=0;i<num;i++){
+                            System.out.print("\nValue:-");
+                            int value = sc.nextInt();
+                            tree.createBT(value);
+                        }
+                        tree.printSpiral(tree.getRootData());
                         break;
             }
         }while(choice!=12);
