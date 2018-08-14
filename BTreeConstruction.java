@@ -10,8 +10,11 @@ public class BTreeConstruction {
         ConstructionQuestion tree = new ConstructionQuestion();
        
         do{
-            System.out.print("\n1)Create tree using inorder and preorder:-\n"
-                    + "2)Create tree in levelOrder using array:-\n12)Exit");
+            System.out.print("\n1)Create tree using inorder and preorder\n"
+                    + "2)Create tree from linlist\n3)Create tree from array"
+                    + "\n4)Convert tree to DLL\n5)Convert a given tree to its Sum Tree\n"
+                    + "6)Convert tree to Circular DLL\n7)Create a Doubly Linked "
+                    + "List from a Ternary Tree\n12)Exit");
             System.out.print("\nEnter your choice:-");
             choice=sc.nextInt();
             switch(choice){
@@ -26,8 +29,64 @@ public class BTreeConstruction {
                         tree.createList(num);
                         tree.treeFromLinkList();
                         break;
-                case 3:
-                       break;
+
+                case 3: System.out.print("\nEnter number of nodes to create list:-");
+                        num=sc.nextInt();
+                        tree.createArray(num);
+                        tree.treeFromArrayList(num);
+                        break;
+
+                case 4: 
+                        System.out.print("\nNumber of nodes:-");
+                        num=sc.nextInt();
+                        for(int i=0;i<num;i++){
+                            System.out.print("\nValue:-");
+                            int value = sc.nextInt();
+                            tree.createBT(value);
+                        }
+                        tree.convertTreetoDll();
+                        break;
+
+                case 5: System.out.print("\nNumber of nodes:-");
+                        num=sc.nextInt();
+                        for(int i=0;i<num;i++){
+                            System.out.print("\nValue:-");
+                            int value = sc.nextInt();
+                            tree.createBT(value);
+                        }
+                        tree.inorder(tree.getRootData());
+                        System.out.print("\nAfter conersion....\n");
+                        tree.convertTreeToSum(tree.getRootData());
+                        tree.inorder(tree.getRootData());
+                        break;
+
+                case 6: System.out.print("\nNumber of nodes:-");
+                        num=sc.nextInt();
+                        for(int i=0;i<num;i++){
+                            System.out.print("\nValue:-");
+                            int value = sc.nextInt();
+                            tree.createBT(value);
+                        }
+                        tree.convertTreeToCircularDLL();
+                        break;
+                        
+                case 7: System.out.print("\nCreating ternary tree....");
+                        TernaryTree treeRoot = new TernaryTree(30);
+                        treeRoot.left = new TernaryTree(5);
+                        treeRoot.middle = new TernaryTree(11);
+                        treeRoot.right = new TernaryTree(63);
+                        treeRoot.left.left = new TernaryTree(1);
+                        treeRoot.left.middle = new TernaryTree(4);
+                        treeRoot.left.right = new TernaryTree(8);
+                        treeRoot.middle.left = new TernaryTree(6);
+                        treeRoot.middle.middle = new TernaryTree(7);
+                        treeRoot.middle.right = new TernaryTree(15);
+                        treeRoot.right.left = new TernaryTree(31);
+                        treeRoot.right.middle = new TernaryTree(55);
+                        treeRoot.right.right = new TernaryTree(65);
+                        tree.storeDataLevelOrder(treeRoot);
+                        tree.createDLL();
+                        break;
             }
         }while(choice!=12);
     }
