@@ -22,6 +22,18 @@ class LinkNode{
     LinkNode prev;
     LinkNode next;
 }
+
+class TernaryTree{
+    int data;
+    TernaryTree left;
+    TernaryTree right;
+    TernaryTree middle;
+    
+    public TernaryTree(int data){
+        this.data = data;
+        left=right=middle=null;
+    }
+}
 public class ConstructionQuestion {
     
     Queue<Integer> queueList = new LinkedList<>();
@@ -32,7 +44,7 @@ public class ConstructionQuestion {
     IntNode rootNode,newNode,tempNode,tempNode1=null;
     LinkNode listRoot,tempListNode,newListNode;
     int ArrayList[] = new int[10];
-    
+    int ternaryList[] = new int[13];
     
     public ConstructionQuestion(){
         root = null;
@@ -453,18 +465,128 @@ public class ConstructionQuestion {
             if(listRoot==null)
                 listRoot=newListNode;
             else{
-               tempListNode=listRoot;
-               while(tempListNode.next!=null)
-                   tempListNode=tempListNode.next;
-               tempListNode.next=newListNode;
-               newListNode.prev=tempListNode;
+                tempListNode=listRoot;
+                while(tempListNode.next!=null)
+                    tempListNode=tempListNode.next;
+                tempListNode.next=newListNode;
+                newListNode.prev=tempListNode;
             }
         }
         tempListNode=listRoot;
+        System.out.print("\nPrinting tree in Dll.....\n");
         while(tempListNode!=null){
             System.out.print(tempListNode.data+" ");
             tempListNode=tempListNode.next;
         }
     }
     
+    int convertTreeToSum(IntNode nodeData){
+        if(nodeData==null)
+            return 0;
+        int old_value = nodeData.data;
+        nodeData.data=convertTreeToSum(nodeData.left)+convertTreeToSum(nodeData.right);
+        return nodeData.data+old_value;
+    }
+    
+    IntNode getRootData(){
+        return rootNode;
+    }
+    
+    void convertTreeToCircularDLL(){
+        saveData(rootNode);
+        while(!queueList.isEmpty()){
+            newListNode = new LinkNode();
+            newListNode.data = queueList.poll();
+            newListNode.next=newListNode;
+            newListNode.prev=newListNode;
+
+            if(listRoot==null)
+                listRoot=newListNode;
+            else{
+                tempListNode=listRoot.prev;
+                newListNode.next=listRoot;
+                listRoot.prev=newListNode;
+                newListNode.prev=tempListNode;
+                tempListNode.next=newListNode;
+            }
+        }
+        tempListNode=listRoot;
+        System.out.print("\nPrinting tree in Circular Dll.....\n");
+        do{
+            System.out.print(tempListNode.data+" ");
+            tempListNode=tempListNode.next;
+        }while(tempListNode!=listRoot);
+    }
+    
+    void storeDataLevelOrder(TernaryTree node){
+        int i=0;
+        TernaryTree tempVar;
+        Queue<TernaryTree> queue = new LinkedList<>();
+        queue.add(node);
+        System.out.print("\n");
+        while(!queue.isEmpty()){
+            tempVar = queue.poll();
+            
+            if(tempVar.left!=null)
+                queue.add(tempVar.left);
+            
+            if(tempVar.middle!=null)
+                queue.add(tempVar.middle);
+            
+            if(tempVar.right!=null)
+                queue.add(tempVar.right);
+            ternaryList[i]=tempVar.data;
+            i++;
+        }
+        /*System.out.println("Printin array");
+        for(int len=0;len<i;len++)
+            System.out.print(ternaryList[len]+" ");*/
+    }
+    
+    void createDLL(){
+        System.out.println("btreeconstruction.ConstructionQuestion.createDLL()");
+        int j,k=0,count=0;
+        newListNode = new LinkNode();
+        newListNode.data = ternaryList[0];
+        newListNode.next=null;
+        newListNode.prev=null;
+        if(listRoot==null)
+            listRoot=newListNode;
+        
+        for(int i=1;i<=3;i++){
+            System.out.println("yo");
+            newListNode = new LinkNode();
+            newListNode.data = ternaryList[i];
+            newListNode.next=null;
+            newListNode.prev=null;
+            tempListNode = listRoot;
+            while(tempListNode.next!=null)
+                tempListNode=tempListNode.next;
+            tempListNode.next=newListNode;
+            newListNode.prev=tempListNode;
+            if(i==1)
+                k=i+3;
+            for(j=0;j<3;j++){
+                //create 3 node for j
+                newListNode = new LinkNode();
+                newListNode.data = ternaryList[k];
+                newListNode.next=null;
+                newListNode.prev=null;
+                tempListNode = listRoot;
+                while(tempListNode.next!=null)
+                    tempListNode=tempListNode.next;
+                tempListNode.next=newListNode;
+                newListNode.prev=tempListNode;
+                k=k+1;
+            }
+            
+        }
+        
+        tempListNode=listRoot;
+        System.out.print("\nPrinting tree in Dll.....\n");
+        while(tempListNode!=null){
+            System.out.print(tempListNode.data+" ");
+            tempListNode=tempListNode.next;
+        }
+    }
 }
