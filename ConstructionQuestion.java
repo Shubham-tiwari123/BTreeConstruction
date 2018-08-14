@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 import java.util.Iterator;
+import java.util.Stack;
 
 class Node{
     char data;
@@ -538,13 +539,9 @@ public class ConstructionQuestion {
             ternaryList[i]=tempVar.data;
             i++;
         }
-        /*System.out.println("Printin array");
-        for(int len=0;len<i;len++)
-            System.out.print(ternaryList[len]+" ");*/
     }
     
     void createDLL(){
-        System.out.println("btreeconstruction.ConstructionQuestion.createDLL()");
         int j,k=0,count=0;
         newListNode = new LinkNode();
         newListNode.data = ternaryList[0];
@@ -554,7 +551,6 @@ public class ConstructionQuestion {
             listRoot=newListNode;
         
         for(int i=1;i<=3;i++){
-            System.out.println("yo");
             newListNode = new LinkNode();
             newListNode.data = ternaryList[i];
             newListNode.next=null;
@@ -567,7 +563,6 @@ public class ConstructionQuestion {
             if(i==1)
                 k=i+3;
             for(j=0;j<3;j++){
-                //create 3 node for j
                 newListNode = new LinkNode();
                 newListNode.data = ternaryList[k];
                 newListNode.next=null;
@@ -587,6 +582,124 @@ public class ConstructionQuestion {
         while(tempListNode!=null){
             System.out.print(tempListNode.data+" ");
             tempListNode=tempListNode.next;
+        }
+    }
+    
+    /*void treeUsingPostAndPre(int pre[], int post[], int size){
+        int flag1[] = new int[size];
+        int flag2[] = new int[size];
+        int l=0;
+        int h=size-1;
+        if(rootNode == null){
+            newNode=new IntNode();
+            newNode.data=pre[0];
+            //System.out.println(pre[0]+"pre1 ");
+            newNode.left=null;
+            newNode.right=null;
+            rootNode=newNode;
+            for(int i=0;i<size;i++){
+                if(post[i]==pre[0]){
+                    flag1[i]=1;
+                    break;
+                }
+            }
+        }
+        if(rootNode.left==null){
+            newNode=new IntNode();
+            newNode.data=pre[1];
+            //System.out.println(pre[1]+"pre2");
+            newNode.left=null;
+            newNode.right=null;
+            rootNode.left=newNode;
+            for(int i=0;i<size;i++){
+                if(post[i]==pre[1]){
+                    flag1[i]=1;
+                    break;
+                }
+            }
+        }
+        if(rootNode.right==null){
+            newNode=new IntNode();
+            newNode.data=post[size-2];
+            //System.out.println(post[size-2]+"post1");
+            newNode.left=null;
+            newNode.right=null;
+            rootNode.right=newNode;
+            for(int i=0;i<size;i++){
+                if(pre[i]==post[size-2]){
+                    flag2[i]=1;
+                    break;
+                }
+            }
+        }
+        else{
+            for(int i=2;i<size;i++){
+                if(flag2[i]!=1){
+                    
+                }
+            }
+        }
+        inorder(rootNode);
+    }*/
+    
+    void convertToLogicalAND(IntNode node){
+        if(node == null)
+            return;
+        convertToLogicalAND(node.left);
+        convertToLogicalAND(node.right);
+        if(node.left!=null && node.right!=null)
+            node.data= (node.left.data) & (node.right.data);
+    }
+    
+    void printSpiral(IntNode node) {
+        Stack<IntNode> s1 = new Stack<>();
+        Queue<IntNode> q= new LinkedList<>();
+        Stack<IntNode> s2 = new Stack<>();
+        s1.push(node);
+        System.out.print("\n");
+        while(!s1.isEmpty()||!s2.isEmpty()){
+            while(!s1.isEmpty()){
+                tempNode = s1.pop();
+                if(tempNode.right!=null)
+                    s2.push(tempNode.right);
+                if(tempNode.left!=null)
+                    s2.push(tempNode.left);
+                q.add(tempNode);
+            }
+            while(!s2.isEmpty()){
+                tempNode = s2.pop();
+                if(tempNode.left!=null)
+                    s1.push(tempNode.left);
+                if(tempNode.right!=null)
+                    s1.push(tempNode.right);
+                q.add(tempNode);
+            }
+        }
+        
+        rootNode=q.poll();
+        rootNode.left=null;
+        rootNode.right=null;
+        while(!q.isEmpty()){
+            newNode = q.poll();
+            if(rootNode.right==null){
+                rootNode.right=newNode;
+                newNode.left=rootNode;
+                newNode.right=null;
+            }
+            else{
+                tempNode = rootNode;
+                while(tempNode.right!=null)
+                    tempNode=tempNode.right;
+                tempNode.right=newNode;
+                newNode.left=tempNode;
+                newNode.right=null;
+            }
+        }
+        System.out.print("\nConverting the tree to DLL without creating new space");
+        tempNode=rootNode;
+        while(tempNode!=null){
+            System.out.print(tempNode.data+" ");
+            tempNode=tempNode.right;
         }
     }
 }
