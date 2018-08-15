@@ -24,6 +24,18 @@ class LinkNode{
     LinkNode next;
 }
 
+class CharNode{
+    char data;
+    CharNode left;
+    CharNode right;
+
+    public CharNode(char item) {
+        data = item;
+        left = null;
+        right = null;
+    }
+}
+
 class TernaryTree{
     int data;
     TernaryTree left;
@@ -701,5 +713,64 @@ public class ConstructionQuestion {
             System.out.print(tempNode.data+" ");
             tempNode=tempNode.right;
         }
+    }
+    
+    IntNode mirrorTree(IntNode node){
+        if(node==null)
+            return node;
+        IntNode left=mirrorTree(node.left);
+        IntNode right=mirrorTree(node.right);
+        
+        node.left=right;
+        node.right=left;
+        
+        return node;
+    }
+    
+    CharNode ternaryToTree(char[] expression,int i){
+        if(i>=expression.length)
+            return null;
+        
+        CharNode charNode = new CharNode(expression[i]);
+        ++i;
+        if (i<expression.length && expression[i]=='?')
+            charNode.left = ternaryToTree(expression, i+1);
+        
+        else if (i < expression.length)
+            charNode.right = ternaryToTree(expression, i+1);
+      
+        return charNode;
+    }
+    
+    void printTernary(CharNode charNode){
+        if(charNode==null)
+            return;
+        System.out.print(charNode.data+" ");
+        printTernary(charNode.left);
+        printTernary(charNode.right);
+    }
+    
+    IntNode flipBinaryTree(IntNode node){
+        if(node==null)
+            return node;
+        if(node.left==null&&node.right==null)
+            return node;
+        rootNode = flipBinaryTree(node.left);
+        
+        node.left.left=node.right;
+        node.left.right=node;
+        node.left=node.right=null;
+        return rootNode;
+    }
+    
+    int updateTree(IntNode node){
+        if(node==null)
+            return 0;
+        if(node.left==null && node.right==null)
+            return node.data;
+        int leftsum=updateTree(node.left);
+        int rightsum=updateTree(node.right);
+        node.data=node.data+leftsum;
+        return node.data;
     }
 }
