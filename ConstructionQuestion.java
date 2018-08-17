@@ -771,6 +771,6 @@ public class ConstructionQuestion {
         int leftsum=updateTree(node.left);
         int rightsum=updateTree(node.right);
         node.data=node.data+leftsum;
-        return node.data;
+        return node.data+rightsum;
     }
 }
