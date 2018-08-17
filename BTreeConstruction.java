@@ -8,6 +8,7 @@ public class BTreeConstruction {
         Scanner sc=new Scanner(System.in);
         int choice;
         ConstructionQuestion tree = new ConstructionQuestion();
+        ConstructionQuestion2 con = new ConstructionQuestion2();
        
         do{
             System.out.print(/*"\n1)Create tree using inorder and preorder\n"
@@ -20,7 +21,9 @@ public class BTreeConstruction {
                     + "10)Binary Tree into Doubly Linked List in spiral fashion\n"
                     + "11)Mirror Tree\n12)Ternary Expression to a Binary Tree\n"
                     + "13)Flip Binary Tree\n"+*/"14)every node stores sum of all"
-                    + " nodes in left subtree\n20)Exit");
+                    + " nodes in left subtree\n15)Tree from Inorder and Level "
+                    + "order traversal\n16)Tree from preorder and postorder traversal\n"
+                    + "20)Exit");
             System.out.print("\nEnter your choice:-");
             choice=sc.nextInt();
             switch(choice){
@@ -165,6 +168,21 @@ public class BTreeConstruction {
                         tree.updateTree(tree.getRootData());
                         System.out.print("\nAfter update.....\n");
                         tree.inorder(tree.getRootData());
+                        break;
+                        
+                case 15:int in[] = new int[]{4, 8, 10, 12, 14, 20, 22};
+                        int level[] = new int[]{20, 8, 22, 4, 12, 10, 14};
+                        TreeUsingOrder startNode=null;
+                        startNode=con.treeUsingInAndLevel(startNode,level,in,0,in.length-1);
+                        con.printInorder(startNode);
+                        break;
+                        
+                case 16:int pre[] = { 1, 2, 4, 8, 9, 5, 3, 6, 7 };
+                        int post[] = { 8, 9, 4, 5, 2, 6, 7, 3, 1 };
+                        startNode=null;
+                        startNode=con.treeUsingPreAndPost(pre,post,0,pre.length-1,pre.length);
+                        con.printInorder(startNode);
+                        break;
             }
         }while(choice!=20);
     }
