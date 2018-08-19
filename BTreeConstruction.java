@@ -1,6 +1,7 @@
 package btreeconstruction;
 
 import java.util.Scanner;
+import java.lang.*;
 
 public class BTreeConstruction {
 
@@ -20,10 +21,15 @@ public class BTreeConstruction {
                     + "9)Binary tree to a tree that holds Logical AND property\n"
                     + "10)Binary Tree into Doubly Linked List in spiral fashion\n"
                     + "11)Mirror Tree\n12)Ternary Expression to a Binary Tree\n"
-                    + "13)Flip Binary Tree\n"+*/"14)every node stores sum of all"
+                    + "13)Flip Binary Tree\n"+"14)every node stores sum of all"
                     + " nodes in left subtree\n15)Tree from Inorder and Level "
                     + "order traversal\n16)Tree from preorder and postorder traversal\n"
-                    + "20)Exit");
+                    + "17)special tree from given preorder traversal\n"
+                    + "18)Binary Tree from given Inorder traversal\n"
+                    + "19)Binary Tree from given PostOredre and Inorder traversal\n"
+                    + "20)Creating a tree with Left-Child Right-Sibling Representation\n*/""
+                    + "21)k-ary tree from its preorder traversal\n"
+                    + "22)Tree from String with bracket representation\n30)Exit");
             System.out.print("\nEnter your choice:-");
             choice=sc.nextInt();
             switch(choice){
@@ -183,8 +189,62 @@ public class BTreeConstruction {
                         startNode=con.treeUsingPreAndPost(pre,post,0,pre.length-1,pre.length);
                         con.printInorder(startNode);
                         break;
+                        
+                case 17:int preOrder[] = new int[]{10, 30, 20, 5, 15};
+                        char preLN[] = new char[]{'N', 'N', 'L', 'L', 'L'};
+                        int len=preOrder.length;
+                        startNode=null;
+                        Index n = new Index();
+                        startNode=con.specialTree(preOrder, preLN,n, len, startNode);
+                        con.printInorder(startNode);
+                        break;
+                        
+                case 18:int inOrder[]=new int[]{5, 10, 40, 30, 28};
+                        len=inOrder.length;
+                        startNode=null;
+                        startNode=con.treeUsingInorder(inOrder, 0, len-1, startNode);
+                        con.printInorder(startNode);
+                        break;
+                        
+                case 19:int inOrderList[] = new int[]{4, 8, 2, 5, 1, 6, 3, 7};
+                        int postOrder[] = new int[]{8, 4, 5, 2, 6, 7, 3, 1};
+                        len=inOrderList.length;
+                        startNode=null;
+                        Index index=new Index();
+                        index.index=len-1;
+                        startNode=con.treeUsingPostAndIn(inOrderList, postOrder, 0, len-1, index);
+                        con.printInorder(startNode);
+                        break;
+                        
+                case 20:NodeTemp root = new NodeTemp(10);
+                        NodeTemp n1 = con.addChild(root,2);
+                        NodeTemp n2 = con.addChild(root,3);
+                        NodeTemp n3 = con.addChild(root,4);
+                        NodeTemp n4 = con.addChild(n3,6);
+                        NodeTemp n5 = con.addChild(root,5);
+                        NodeTemp n6 = con.addChild(n5,7);
+                        NodeTemp n7 = con.addChild(n5,8);
+                        NodeTemp n8 = con.addChild(n5,9);
+                        con.traverseTree(root);
+                        break;
+                        
+                case 21:int ind = 0;
+                        int k = 3; num = 10;
+                        int preOrderList[] = { 1, 2, 5, 6, 7, 3, 8, 9, 10, 4 };
+                        int treeHeight = (int)Math.ceil(Math.log((double)num * (k - 1) + 1)/ Math.log((double)k));
+                        KRootNode rootNode= con.buildKrootTree(preOrderList,num,k,treeHeight,ind);
+                        con.postord(rootNode, k);
+                        break;
+                        
+                case 22:String str = "4(2(3)(1))(6(5))";
+                        startNode=null;
+                        char[] strData=str.toCharArray();
+                        startNode=con.treeFromString(strData, 0, str.length()-1);
+                        con.printInorder(startNode);
+                        break;
+                
             }
-        }while(choice!=20);
+        }while(choice!=30);
     }
     
 }
