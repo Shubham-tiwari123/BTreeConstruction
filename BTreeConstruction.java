@@ -12,7 +12,7 @@ public class BTreeConstruction {
         ConstructionQuestion2 con = new ConstructionQuestion2();
        
         do{
-            System.out.print(/*"\n1)Create tree using inorder and preorder\n"
+            System.out.print("\n1)Create tree using inorder and preorder\n"
                     + "2)Create tree from linlist\n3)Create tree from array"
                     + "\n4)Convert tree to DLL\n5)Convert a given tree to its Sum Tree\n"
                     + "6)Convert tree to Circular DLL\n7)Create a Doubly Linked "
@@ -27,9 +27,13 @@ public class BTreeConstruction {
                     + "17)special tree from given preorder traversal\n"
                     + "18)Binary Tree from given Inorder traversal\n"
                     + "19)Binary Tree from given PostOredre and Inorder traversal\n"
-                    + "20)Creating a tree with Left-Child Right-Sibling Representation\n*/""
+                    + "20)Creating a tree with Left-Child Right-Sibling Representation\n"
                     + "21)k-ary tree from its preorder traversal\n"
-                    + "22)Tree from String with bracket representation\n30)Exit");
+                    + "22)Tree from String with bracket representation\n"
+                    + "23)Convert left-right representation of a binary tree to down-right\n"
+                    + "24)Tree that holds Children Sum Property\n"
+                    + "25)Tree using its Preorder traversal and Preorder traversal of its mirror tree\n"
+                            + "30)Exit");
             System.out.print("\nEnter your choice:-");
             choice=sc.nextInt();
             switch(choice){
@@ -242,7 +246,44 @@ public class BTreeConstruction {
                         startNode=con.treeFromString(strData, 0, str.length()-1);
                         con.printInorder(startNode);
                         break;
-                
+                        
+                case 23:startNode=null;
+                        startNode = new TreeUsingOrder(1);
+                        startNode.left = new TreeUsingOrder(2);
+                        startNode.right = new TreeUsingOrder(3);
+                        startNode.right.left = new TreeUsingOrder(4);
+                        startNode.right.right = new TreeUsingOrder(5);
+                        startNode.right.right.left = new TreeUsingOrder(7);
+                        startNode.right.left.left = new TreeUsingOrder(6);
+                        startNode.right.right.right = new TreeUsingOrder(8);
+                        con.convertTree(startNode);
+                        con.printInorder(startNode);
+                        break;
+                        
+                case 24:startNode=null;
+                        startNode = new TreeUsingOrder(1);
+                        startNode.left = new TreeUsingOrder(2);
+                        startNode.right = new TreeUsingOrder(3);
+                        startNode.right.left = new TreeUsingOrder(4);
+                        startNode.right.right = new TreeUsingOrder(5);
+                        startNode.right.right.left = new TreeUsingOrder(7);
+                        startNode.right.left.left = new TreeUsingOrder(6);
+                        startNode.right.right.right = new TreeUsingOrder(8);
+                        System.out.print("\nTree before converstion..\n");
+                        con.printInorder(startNode);
+                        con.treeToHoldSum(startNode);
+                        System.out.print("\nAfter convrsion..\n");
+                        con.printInorder(startNode);
+                        break;
+                        
+                case 25:int preOrderArray[] = {1,2,4,5,3,6,7};
+                        int preOrderMirror[] = {1,3,7,6,2,5,4};
+                        int size = preOrderArray.length;
+                        startNode=null;
+                        startNode=con.treeUsingPreAndMirror(preOrderArray,
+                                preOrderMirror,0,0,size-1,size);
+                        con.printInorder(startNode);
+                        break;
             }
         }while(choice!=30);
     }
