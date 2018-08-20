@@ -1,6 +1,7 @@
 package btreeconstruction;
 import java.util.Vector;
 import java.util.Stack;
+
 class TreeUsingOrder{
     int data;
     TreeUsingOrder left;
@@ -72,8 +73,7 @@ public class ConstructionQuestion2 {
   
         return startNode;
     }
-    void printInorder(TreeUsingOrder node) 
-    {
+    void printInorder(TreeUsingOrder node){
         if (node == null)
             return;
         printInorder(node.left);
@@ -186,7 +186,7 @@ public class ConstructionQuestion2 {
     }
     KRootNode buildKrootTree(int A[],int n,int k,int h,int ind){
         if (n <= 0)
-        return null;
+            return null;
         KRootNode nNode = new KRootNode(A[ind]);
         if (nNode == null) {
             return null;
@@ -208,25 +208,26 @@ public class ConstructionQuestion2 {
             postord(root.child.elementAt(i),k);
         System.out.println(root.data+" ");
     }
-    int findIndex(char[] str, int si, int ei)
-{
-    if (si > ei)
-        return -1;
-    Stack<Character>s = new Stack<>();
- 
-    for (int i = si; i <= ei; i++) {
-        if (str[i] == '(')
-            s.add(str[i]);
-        else if (str[i] == ')') {
-            if (s.firstElement() == '(') {
-                s.pop();
-                if (s.empty())
-                    return i;
+    
+    int findIndex(char[] str, int si, int ei){
+        if (si > ei)
+            return -1;
+        Stack<Character>s = new Stack<>();
+
+        for (int i = si; i <= ei; i++) {
+            if (str[i] == '(')
+                s.add(str[i]);
+            else if (str[i] == ')') {
+                if (s.firstElement() == '(') {
+                    s.pop();
+                    if (s.empty())
+                        return i;
+                }
             }
         }
+        return -1;
     }
-    return -1;
-}
+    
     TreeUsingOrder treeFromString(char[] str,int start,int end){
         if(start>end)
             return null;
@@ -235,10 +236,75 @@ public class ConstructionQuestion2 {
         
         if ((start+1)<= end && str[start+1] == '(')
              index = findIndex(str, start + 1, end);
-         if (index != -1) {
-        startNode.left = treeFromString(str, start + 2, index - 1);
-        startNode.right = treeFromString(str, index + 2, end - 1);
+        if (index != -1) {
+            startNode.left = treeFromString(str, start + 2, index - 1);
+            startNode.right = treeFromString(str, index + 2, end - 1);
+        }
+        return startNode;
     }
-    return startNode;
+    
+    void convertTree(TreeUsingOrder startNode){
+        if(startNode==null)
+            return;
+        convertTree(startNode.left);
+        convertTree(startNode.right);
+        if(startNode.left==null)
+            startNode.left=startNode.right;
+        else
+            startNode.left.right=startNode.right;
+        
+        startNode.right=null;
+    }
+    
+    void treeToHoldSum(TreeUsingOrder startNode){
+        int leftData=0,rightData=0,diff=0;
+        if(startNode==null||startNode.left==null||startNode.right==null)
+            return;
+        else{
+            treeToHoldSum(startNode.left);
+            treeToHoldSum(startNode.right);
+             if (startNode.left != null)
+                leftData = startNode.left.data;
+             
+            if (startNode.right != null)
+                rightData = startNode.right.data;
+  
+            diff = leftData + rightData - startNode.data;
+  
+            if (diff > 0)
+                startNode.data = startNode.data + diff;
+  
+            if (diff < 0)
+                increment(startNode, -diff);  
+        }
+    }
+    void increment(TreeUsingOrder node,int diff){
+        if (node.left != null){
+            node.left.data = node.left.data + diff;
+            increment(node.left, diff);
+        } 
+        else if (node.right != null){
+            node.right.data = node.right.data + diff;
+            increment(node.right, diff);
+        }
+    }
+    
+    TreeUsingOrder treeUsingPreAndMirror(int pre[], int preM[],int preIndex, int l,int h,int size){
+        if (preIndex >= size || l > h)
+            return null;
+        TreeUsingOrder node= new TreeUsingOrder(pre[preIndex]);
+        ++preIndex;
+        if (l == h)
+            return node;
+        int i;
+        for (i=l; i<=h;++i)
+            if (pre[preIndex] == preM[i])
+                break;
+        
+        if (i <= h){
+            node.left = treeUsingPreAndMirror(pre, preM,preIndex, i, h, size);
+            node.right = treeUsingPreAndMirror(pre, preM, preIndex, l+1, i-1, size);
+        }
+        return node;
     }
 }
